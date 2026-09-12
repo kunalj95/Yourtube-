@@ -59,11 +59,9 @@ export default function HistoryContent() {
     return (
       <div className="text-center py-12">
         <Clock className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-
         <h2 className="text-xl font-semibold mb-2">
           Keep track of what you watch
         </h2>
-
         <p className="text-gray-600">
           Watch history isn't viewable when signed out.
         </p>
@@ -75,98 +73,79 @@ export default function HistoryContent() {
     return (
       <div className="text-center py-12">
         <Clock className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-
-        <h2 className="text-xl font-semibold mb-2">
-          No watch history yet
-        </h2>
-
-        <p className="text-gray-600">
-          Videos you watch will appear here.
-        </p>
+        <h2 className="text-xl font-semibold mb-2">No watch history yet</h2>
+        <p className="text-gray-600">Videos you watch will appear here.</p>
       </div>
     );
   }
 
+  const videos = "/video/vdo.mp4";
+
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <p className="text-sm text-gray-600">
-          {history.length} videos
-        </p>
+        <p className="text-sm text-gray-600">{history.length} videos</p>
       </div>
 
       <div className="space-y-4">
-        {history.map((item) => (
-          <div
-            key={item._id}
-            className="flex gap-4 group"
-          >
-            {/* Video thumbnail */}
-            <Link href={`/watch/${item.videoid._id}`} className="flex-shrink-0">
-              <div className="relative w-40 aspect-video bg-gray-100 rounded overflow-hidden">
-                <video
-                  src={`http://localhost:5000/${item.videoid?.filepath?.replace(/\\/g, "/")}`}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
-                  preload="metadata"
-                  muted
-                />
-              </div>
-            </Link>
+        {history.map((item) => {
+          // Skip history entries whose video has been deleted
+          if (!item.videoid) return null;
 
-            {/* Video information */}
-            <div className="flex-1 min-w-0">
-              <Link href={`/watch/${item.videoid._id}`}>
-                <h3 className="font-medium text-sm line-clamp-2 group-hover:text-blue-600 mb-1">
-                  {item.videoid.videotitle}
-                </h3>
+          return (
+            <div key={item._id} className="flex gap-4 group">
+              <Link
+                href={`/watch/${item.videoid._id}`}
+                className="flex-shrink-0"
+              >
+                <div className="relative w-40 aspect-video bg-gray-100 rounded overflow-hidden">
+                  <video
+                    src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${item.videoid?.filepath}`}
+                    className="object-cover group-hover:scale-105 transition-transform duration-200"
+                  />
+                </div>
               </Link>
 
-              <p className="text-sm text-gray-600">
-                {item.videoid.videochanel}
-              </p>
+              <div className="flex-1 min-w-0">
+                <Link href={`/watch/${item.videoid._id}`}>
+                  <h3 className="font-medium text-sm line-clamp-2 group-hover:text-blue-600 mb-1">
+                    {item.videoid.videotitle}
+                  </h3>
+                </Link>
+                <p className="text-sm text-gray-600">
+                  {item.videoid.videochanel}
+                </p>
+                <p className="text-sm text-gray-600">
+                  {item.videoid.views.toLocaleString()} views •{" "}
+                  {formatDistanceToNow(new Date(item.videoid.createdAt))} ago
+                </p>
+                <p className="text-xs text-gray-500 mt-1">
+                  Added {formatDistanceToNow(new Date(item.createdAt))} ago
+                </p>
+              </div>
 
-              <p className="text-sm text-gray-600">
-                {item.videoid.views.toLocaleString()} views •{" "}
-                {formatDistanceToNow(
-                  new Date(item.videoid.createdAt)
-                )}{" "}
-                ago
-              </p>
-
-              <p className="text-xs text-gray-500 mt-1">
-                Added{" "}
-                {formatDistanceToNow(
-                  new Date(item.createdAt)
-                )}{" "}
-                ago
-              </p>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="opacity-0 group-hover:opacity-100"
+                  >
+                    <MoreVertical className="w-4 h-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem
+                    onClick={() => handleRemoveFromHistory(item._id)}
+                  >
+                    <X className="w-4 h-4 mr-2" />
+                    Remove from watch history
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
-
-            {/* More options */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="opacity-0 group-hover:opacity-100"
-                >
-                  <MoreVertical className="w-4 h-4" />
-                </Button>
-              </DropdownMenuTrigger>
-
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem
-                  onClick={() =>
-                    handleRemoveFromHistory(item._id)
-                  }
-                >
-                  <X className="w-4 h-4 mr-2" />
-                  Remove from watch history
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
