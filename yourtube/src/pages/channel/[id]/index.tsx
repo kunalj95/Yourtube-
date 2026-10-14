@@ -1,6 +1,7 @@
 import ChannelHeader from "@/components/ChannelHeader";
 import Channeltabs from "@/components/Channeltabs";
 import ChannelVideos from "@/components/ChannelVideos";
+import DownloadsContent from "@/components/DownloadsContent";
 import VideoUploader from "@/components/VideoUploader";
 import { useUser } from "@/lib/AuthContext";
 import { useRouter } from "next/router";
@@ -13,6 +14,7 @@ const index = () => {
   const { user } = useUser();
 
   const [videos, setVideos] = useState<any[]>([]);
+  const [activeTab, setActiveTab] = useState("videos");
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -35,18 +37,34 @@ const index = () => {
         <div className="max-w-full mx-auto">
           <ChannelHeader channel={channel} user={user} />
 
-          <Channeltabs />
+          <Channeltabs onTabChange={setActiveTab} />
 
-          <div className="px-4 pb-8">
-            <VideoUploader
-              channelId={id}
-              channelName={channel?.channelname}
-            />
-          </div>
+          {/* -----------------------------------------
+              Videos Tab
+          ----------------------------------------- */}
 
-          <div className="px-4 pb-8">
-            <ChannelVideos videos={videos} />
-          </div>
+          {activeTab === "videos" && (
+            <>
+              <div className="px-4 pb-8">
+                <VideoUploader
+                  channelId={id}
+                  channelName={channel?.channelname}
+                />
+              </div>
+
+              <div className="px-4 pb-8">
+                <ChannelVideos videos={videos} />
+              </div>
+            </>
+          )}
+
+          {/* -----------------------------------------
+              Downloads Tab
+          ----------------------------------------- */}
+
+          {activeTab === "downloads" && (
+            <DownloadsContent userId={user?._id} />
+          )}
         </div>
       </div>
     );

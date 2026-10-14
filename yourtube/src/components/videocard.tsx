@@ -19,7 +19,7 @@ export default function VideoCard({ video }: any) {
         <div className="relative aspect-video rounded-lg overflow-hidden bg-gray-100">
           <video
             src={videoUrl}
-            className="object-cover group-hover:scale-105 transition-transform duration-200"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
           />
 
           <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-1 rounded">
@@ -29,7 +29,9 @@ export default function VideoCard({ video }: any) {
 
         <div className="flex gap-3">
           <Avatar className="w-9 h-9 flex-shrink-0">
-            <AvatarFallback>{video?.videochanel?.[0]}</AvatarFallback>
+            <AvatarFallback>
+              {video?.videochanel?.[0]}
+            </AvatarFallback>
           </Avatar>
 
           <div className="flex-1 min-w-0">

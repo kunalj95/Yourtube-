@@ -23,3 +23,21 @@ pnpm-debug.log*
 # OS files
 .DS_Store
 Thumbs.db
+
+# Dependencies
+**/node_modules/
+
+# Build output
+**/.next/
+**/out/
+**/dist/
+**/build/
+
+# TypeScript build files
+*.tsbuildinfo
+
+# Environment files
+.env
+.env.*
+**/.env
+**/.env.*
