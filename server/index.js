@@ -31,12 +31,25 @@ const app = express();
 // CORS
 // -----------------------------------------
 
+
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://yourtube-rho.vercel.app",
+];
+
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Origin not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
+
 
 
 // =====================================================
