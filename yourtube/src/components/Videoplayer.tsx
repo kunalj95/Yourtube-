@@ -200,8 +200,11 @@ export default function VideoPlayer({
       ?.replace(/\\/g, "/")
       .replace(/^\/+/, "");
 
-  const videoSrc =
-    `${normalizedBackendUrl}/${normalizedFilePath}`;
+  const videoSrc = video?.filepath
+    ? /^https?:\/\//i.test(video.filepath)
+      ? video.filepath
+      : `${normalizedBackendUrl}/${normalizedFilePath}`
+    : "";
 
   // =====================================================
   // FORMAT TIME
@@ -290,16 +293,16 @@ export default function VideoPlayer({
       COMPLETION_PERCENTAGE;
 
     const progress: SavedVideoProgress =
-      {
-        currentTime:
-          currentPosition,
-        duration:
-          currentDuration,
-        percentage,
-        completed,
-        updatedAt:
-          Date.now(),
-      };
+    {
+      currentTime:
+        currentPosition,
+      duration:
+        currentDuration,
+      percentage,
+      completed,
+      updatedAt:
+        Date.now(),
+    };
 
     try {
       localStorage.setItem(
@@ -518,11 +521,11 @@ export default function VideoPlayer({
       Math.min(
         Math.max(
           videoElement.currentTime +
-            seconds,
+          seconds,
           0
         ),
         videoElement.duration ||
-          0
+        0
       );
 
     videoElement.currentTime =
@@ -618,7 +621,7 @@ export default function VideoPlayer({
       Math.min(
         Math.max(
           videoElement.volume +
-            amount,
+          amount,
           0
         ),
         1
@@ -657,7 +660,7 @@ export default function VideoPlayer({
     ) {
       const restoredVolume =
         previousVolumeRef.current >
-        0
+          0
           ? previousVolumeRef.current
           : 1;
 
@@ -735,7 +738,7 @@ export default function VideoPlayer({
           Math.min(
             currentIndex + 1,
             SPEED_OPTIONS.length -
-              1
+            1
           );
       } else {
         newIndex =
@@ -747,7 +750,7 @@ export default function VideoPlayer({
 
       const newSpeed =
         SPEED_OPTIONS[
-          newIndex
+        newIndex
         ];
 
       const videoElement =
@@ -869,7 +872,7 @@ export default function VideoPlayer({
       if (
         !videoElement ||
         videoElement.textTracks.length ===
-          0
+        0
       ) {
         return;
       }
@@ -886,8 +889,8 @@ export default function VideoPlayer({
         videoElement.textTracks[
           index
         ].mode = nextState
-          ? "showing"
-          : "disabled";
+            ? "showing"
+            : "disabled";
       }
 
       setCaptionsEnabled(
@@ -931,14 +934,14 @@ export default function VideoPlayer({
       const bufferedEnd =
         videoElement.buffered.end(
           videoElement.buffered.length -
-            1
+          1
         );
 
       const percent =
         Math.min(
           (bufferedEnd /
             videoElement.duration) *
-            100,
+          100,
           100
         );
 
@@ -989,7 +992,7 @@ export default function VideoPlayer({
 
     setHasCaptions(
       videoElement.textTracks.length >
-        0
+      0
     );
   };
 
@@ -1050,11 +1053,11 @@ export default function VideoPlayer({
           if (
             currentIndex !== -1 &&
             currentIndex <
-              allVideos.length - 1
+            allVideos.length - 1
           ) {
             foundNextVideo =
               allVideos[
-                currentIndex + 1
+              currentIndex + 1
               ];
           }
 
@@ -1291,14 +1294,14 @@ export default function VideoPlayer({
       const percentage =
         rect.width > 0
           ? clampedX /
-            rect.width
+          rect.width
           : 0;
 
       const previewTime =
         Math.min(
           Math.max(
             percentage *
-              duration,
+            duration,
             0
           ),
           duration
@@ -1348,7 +1351,7 @@ export default function VideoPlayer({
                 0
               ),
               previewVideo.duration ||
-                duration
+              duration
             );
 
           previewVideo.currentTime =
@@ -1457,12 +1460,12 @@ export default function VideoPlayer({
       () => {
         setDuration(
           videoElement.duration ||
-            0
+          0
         );
 
         setCurrentTime(
           videoElement.currentTime ||
-            0
+          0
         );
 
         videoElement.volume =
@@ -1493,7 +1496,7 @@ export default function VideoPlayer({
         if (
           router.isReady &&
           router.query.autoplay ===
-            "1"
+          "1"
         ) {
           setTimeout(() => {
             videoElement
@@ -1686,16 +1689,16 @@ export default function VideoPlayer({
 
         try {
           const progress: SavedVideoProgress =
-            {
-              currentTime:
-                videoElement.duration,
-              duration:
-                videoElement.duration,
-              percentage: 100,
-              completed: true,
-              updatedAt:
-                Date.now(),
-            };
+          {
+            currentTime:
+              videoElement.duration,
+            duration:
+              videoElement.duration,
+            percentage: 100,
+            completed: true,
+            updatedAt:
+              Date.now(),
+          };
 
           localStorage.setItem(
             getProgressStorageKey(
@@ -1723,8 +1726,8 @@ export default function VideoPlayer({
 
         setIsMuted(
           videoElement.muted ||
-            videoElement.volume ===
-              0
+          videoElement.volume ===
+          0
         );
       };
 
@@ -1756,7 +1759,7 @@ export default function VideoPlayer({
         if (
           otherVideoId &&
           otherVideoId !==
-            video._id
+          video._id
         ) {
           videoElement.pause();
         }
@@ -2296,15 +2299,15 @@ export default function VideoPlayer({
   const remainingTime =
     Math.max(
       duration -
-        currentTime,
+      currentTime,
       0
     );
 
   const progressPercent =
     duration > 0
       ? (currentTime /
-          duration) *
-        100
+        duration) *
+      100
       : 0;
 
   // =====================================================
@@ -2324,11 +2327,10 @@ export default function VideoPlayer({
       onMouseLeave={
         handleMouseLeave
       }
-      className={`relative w-full bg-black overflow-hidden outline-none ${
-        isTheaterMode
+      className={`relative w-full bg-black overflow-hidden outline-none ${isTheaterMode
           ? "fixed inset-4 z-50 flex items-center justify-center rounded-lg shadow-2xl"
           : "aspect-video rounded-lg"
-      }`}
+        }`}
       aria-label="Custom video player"
     >
       {/* ================================================= */}
@@ -2431,20 +2433,20 @@ export default function VideoPlayer({
 
                   {nextCountdown >
                     0 && (
-                    <p className="text-xs text-gray-400 mt-1">
-                      Playing in{" "}
-                      <span className="text-white font-semibold">
-                        {
-                          nextCountdown
-                        }
-                      </span>{" "}
-                      second
-                      {nextCountdown !==
-                      1
-                        ? "s"
-                        : ""}
-                    </p>
-                  )}
+                      <p className="text-xs text-gray-400 mt-1">
+                        Playing in{" "}
+                        <span className="text-white font-semibold">
+                          {
+                            nextCountdown
+                          }
+                        </span>{" "}
+                        second
+                        {nextCountdown !==
+                          1
+                          ? "s"
+                          : ""}
+                      </p>
+                    )}
                 </div>
 
                 <button
@@ -2501,11 +2503,10 @@ export default function VideoPlayer({
       {/* ================================================= */}
 
       <div
-        className={`absolute left-0 right-0 bottom-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent px-3 pt-10 pb-3 transition-opacity duration-300 ${
-          controlsVisible
+        className={`absolute left-0 right-0 bottom-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent px-3 pt-10 pb-3 transition-opacity duration-300 ${controlsVisible
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
-        }`}
+          }`}
       >
         {/* ================================================= */}
         {/* TIMELINE */}
@@ -2750,11 +2751,10 @@ export default function VideoPlayer({
                 onClick={
                   toggleCaptions
                 }
-                className={`h-8 px-2 rounded transition text-xs ${
-                  captionsEnabled
+                className={`h-8 px-2 rounded transition text-xs ${captionsEnabled
                     ? "bg-white/20"
                     : "hover:bg-white/10"
-                }`}
+                  }`}
                 aria-label={
                   captionsEnabled
                     ? "Disable captions"
@@ -2775,11 +2775,10 @@ export default function VideoPlayer({
               onClick={
                 togglePictureInPicture
               }
-              className={`h-8 px-2 rounded transition text-xs ${
-                isPictureInPicture
+              className={`h-8 px-2 rounded transition text-xs ${isPictureInPicture
                   ? "bg-white/20"
                   : "hover:bg-white/10"
-              }`}
+                }`}
               aria-label="Picture-in-Picture"
               title="Picture-in-Picture"
             >
@@ -2791,11 +2790,10 @@ export default function VideoPlayer({
               onClick={
                 toggleTheaterMode
               }
-              className={`h-8 px-2 rounded transition text-xs ${
-                isTheaterMode
+              className={`h-8 px-2 rounded transition text-xs ${isTheaterMode
                   ? "bg-white/20"
                   : "hover:bg-white/10"
-              }`}
+                }`}
               aria-label={
                 isTheaterMode
                   ? "Exit theater mode"

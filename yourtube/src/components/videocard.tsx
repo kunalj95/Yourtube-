@@ -7,10 +7,19 @@ import { Avatar, AvatarFallback } from "./ui/avatar";
 const videos = "/video/vdo.mp4";
 
 export default function VideoCard({ video }: any) {
+
+  const backendUrl =
+    process.env.NEXT_PUBLIC_BACKEND_URL ||
+    "http://localhost:5000";
+
+  const normalizedBackendUrl = backendUrl.replace(/\/$/, "");
+
   const videoPath = video?.filepath?.replace(/\\/g, "/");
 
   const videoUrl = videoPath
-    ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/${videoPath}`
+    ? /^https?:\/\//i.test(videoPath)
+      ? videoPath
+      : `${normalizedBackendUrl}/${videoPath.replace(/^\/+/, "")}`
     : videos;
 
   return (
