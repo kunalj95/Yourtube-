@@ -1,4 +1,12 @@
+
 import transporter from "../config/mailer.js";
+import { Resend } from "resend";
+
+// Use Resend when an API key is configured.
+// Otherwise, keep the existing SMTP method for localhost.
+const resend = process.env.RESEND_API_KEY
+  ? new Resend(process.env.RESEND_API_KEY)
+  : null;
 
 // =====================================================
 // SEND LOGIN OTP EMAIL
@@ -20,9 +28,7 @@ export const sendLoginOtpEmail = async ({
     // -----------------------------------------
 
     if (!email) {
-      throw new Error(
-        "Recipient email is required."
-      );
+      throw new Error("Recipient email is required.");
     }
 
     // -----------------------------------------
@@ -74,14 +80,9 @@ YourTube Security Team
           color: #222;
         "
       >
+        <h2>YourTube Security Verification</h2>
 
-        <h2>
-          YourTube Security Verification
-        </h2>
-
-        <p>
-          Hello ${name || "User"},
-        </p>
+        <p>Hello ${name || "User"},</p>
 
         <p>
           We detected a login to your
@@ -120,9 +121,7 @@ YourTube Security Team
 
         <p>
           This code expires in
-          <strong>
-            ${expiresInMinutes} minutes
-          </strong>.
+          <strong>${expiresInMinutes} minutes</strong>.
         </p>
 
         <div
@@ -133,10 +132,7 @@ YourTube Security Team
             margin-top: 20px;
           "
         >
-
-          <h3>
-            Login Information
-          </h3>
+          <h3>Login Information</h3>
 
           <p>
             <strong>Browser:</strong>
@@ -157,7 +153,6 @@ YourTube Security Team
             <strong>State:</strong>
             ${state || "Unknown"}
           </p>
-
         </div>
 
         <p
@@ -174,7 +169,6 @@ YourTube Security Team
           Regards,<br />
           <strong>YourTube Security Team</strong>
         </p>
-
       </div>
     `;
 
@@ -182,38 +176,49 @@ YourTube Security Team
     // Send email
     // -----------------------------------------
 
-    const info =
-      await transporter.sendMail({
+    let messageId;
+
+    if (resend) {
+      // Resend HTTPS API
+      const { data, error } = await resend.emails.send({
         from:
-          process.env.SMTP_FROM,
+          process.env.RESEND_FROM ||
+          "YourTube <onboarding@resend.dev>",
 
-        to:
-          email,
-
+        to: [email],
         subject,
-
         text,
-
         html,
       });
 
-    console.log(
-      "Login OTP email sent:",
-      info.messageId
-    );
+      if (error) {
+        throw new Error(
+          `Resend email error: ${error.message}`
+        );
+      }
+
+      messageId = data?.id;
+    } else {
+      // Existing SMTP method for localhost
+      const info = await transporter.sendMail({
+        from: process.env.SMTP_FROM,
+        to: email,
+        subject,
+        text,
+        html,
+      });
+
+      messageId = info.messageId;
+    }
+
+    console.log("Login OTP email sent:", messageId);
 
     return {
       success: true,
-      messageId:
-        info.messageId,
+      messageId,
     };
-
   } catch (error) {
-    console.error(
-      "Login OTP email error:",
-      error
-    );
-
+    console.error("Login OTP email error:", error);
     throw error;
   }
 };
