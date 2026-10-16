@@ -58,13 +58,13 @@ const getDefaultThemeByISTTime = () => {
   const hour =
     Number(
       hourPart?.value ||
-        0
+      0
     );
 
   const minute =
     Number(
       minutePart?.value ||
-        0
+      0
     );
 
   const totalMinutes =
@@ -79,9 +79,9 @@ const getDefaultThemeByISTTime = () => {
 
   if (
     totalMinutes >=
-      lightStart &&
+    lightStart &&
     totalMinutes <
-      darkStart
+    darkStart
   ) {
     return "light";
   }
@@ -102,7 +102,7 @@ const getClientIpAddress = (
 ) => {
   const forwardedFor =
     req.headers[
-      "x-forwarded-for"
+    "x-forwarded-for"
     ];
 
   if (forwardedFor) {
@@ -149,9 +149,9 @@ const isLocalOrPrivateIp = (
 
   if (
     normalizedIp ===
-      "127.0.0.1" ||
+    "127.0.0.1" ||
     normalizedIp ===
-      "localhost"
+    "localhost"
   ) {
     return true;
   }
@@ -193,9 +193,9 @@ const isLocalOrPrivateIp = (
 
     if (
       secondPart >=
-        16 &&
+      16 &&
       secondPart <=
-        31
+      31
     ) {
       return true;
     }
@@ -317,13 +317,13 @@ const getApproximateLocation =
 
         latitude:
           typeof locationData?.latitude ===
-          "number"
+            "number"
             ? locationData.latitude
             : null,
 
         longitude:
           typeof locationData?.longitude ===
-          "number"
+            "number"
             ? locationData.longitude
             : null,
       };
@@ -663,7 +663,7 @@ const getLoginInformation = (
 ) => {
   const userAgent =
     req.headers[
-      "user-agent"
+    "user-agent"
     ] ||
     "Unknown";
 
@@ -735,7 +735,7 @@ const getTrustedDeviceToken = (
 ) => {
   const token =
     req.headers[
-      "x-yourtube-trusted-device-token"
+    "x-yourtube-trusted-device-token"
     ];
 
   if (!token) {
@@ -761,9 +761,9 @@ const isKnownValue = (
     String(value)
       .trim()
       .toLowerCase() !==
-      "unknown" &&
+    "unknown" &&
     String(value).trim() !==
-      ""
+    ""
   );
 };
 
@@ -788,7 +788,7 @@ const trustedEnvironmentMatches = (
       loginInformation.browserName
     ) &&
     trustedDevice.browserName !==
-      loginInformation.browserName
+    loginInformation.browserName
   ) {
     return false;
   }
@@ -805,7 +805,7 @@ const trustedEnvironmentMatches = (
       loginInformation.deviceType
     ) &&
     trustedDevice.deviceType !==
-      loginInformation.deviceType
+    loginInformation.deviceType
   ) {
     return false;
   }
@@ -822,7 +822,7 @@ const trustedEnvironmentMatches = (
       loginInformation.deviceModel
     ) &&
     trustedDevice.deviceModel !==
-      loginInformation.deviceModel
+    loginInformation.deviceModel
   ) {
     return false;
   }
@@ -839,7 +839,7 @@ const trustedEnvironmentMatches = (
       loginInformation.operatingSystem
     ) &&
     trustedDevice.operatingSystem !==
-      loginInformation.operatingSystem
+    loginInformation.operatingSystem
   ) {
     return false;
   }
@@ -856,7 +856,7 @@ const trustedEnvironmentMatches = (
       loginInformation.ipAddress
     ) &&
     trustedDevice.lastIpAddress !==
-      loginInformation.ipAddress
+    loginInformation.ipAddress
   ) {
     return false;
   }
@@ -873,7 +873,7 @@ const trustedEnvironmentMatches = (
       locationInformation.city
     ) &&
     trustedDevice.lastCity !==
-      locationInformation.city
+    locationInformation.city
   ) {
     return false;
   }
@@ -890,7 +890,7 @@ const trustedEnvironmentMatches = (
       locationInformation.state
     ) &&
     trustedDevice.lastState !==
-      locationInformation.state
+    locationInformation.state
   ) {
     return false;
   }
@@ -1017,7 +1017,7 @@ const findTrustedDeviceForLogin =
         loginInformation.browserName
       ) &&
       trustedDevice.browserName !==
-        loginInformation.browserName
+      loginInformation.browserName
     ) {
       mismatches.push(
         "browser"
@@ -1032,7 +1032,7 @@ const findTrustedDeviceForLogin =
         loginInformation.deviceType
       ) &&
       trustedDevice.deviceType !==
-        loginInformation.deviceType
+      loginInformation.deviceType
     ) {
       mismatches.push(
         "deviceType"
@@ -1047,7 +1047,7 @@ const findTrustedDeviceForLogin =
         loginInformation.deviceModel
       ) &&
       trustedDevice.deviceModel !==
-        loginInformation.deviceModel
+      loginInformation.deviceModel
     ) {
       mismatches.push(
         "deviceModel"
@@ -1062,7 +1062,7 @@ const findTrustedDeviceForLogin =
         loginInformation.operatingSystem
       ) &&
       trustedDevice.operatingSystem !==
-        loginInformation.operatingSystem
+      loginInformation.operatingSystem
     ) {
       mismatches.push(
         "operatingSystem"
@@ -1077,7 +1077,7 @@ const findTrustedDeviceForLogin =
         loginInformation.ipAddress
       ) &&
       trustedDevice.lastIpAddress !==
-        loginInformation.ipAddress
+      loginInformation.ipAddress
     ) {
       mismatches.push(
         "ipAddress"
@@ -1092,7 +1092,7 @@ const findTrustedDeviceForLogin =
         locationInformation.city
       ) &&
       trustedDevice.lastCity !==
-        locationInformation.city
+      locationInformation.city
     ) {
       mismatches.push(
         "city"
@@ -1107,7 +1107,7 @@ const findTrustedDeviceForLogin =
         locationInformation.state
       ) &&
       trustedDevice.lastState !==
-        locationInformation.state
+      locationInformation.state
     ) {
       mismatches.push(
         "state"
@@ -1173,7 +1173,7 @@ const otpChallengeEnvironmentMatches =
         loginInformation.browserName
       ) &&
       otpChallenge.browserName !==
-        loginInformation.browserName
+      loginInformation.browserName
     ) {
       return false;
     }
@@ -1190,7 +1190,7 @@ const otpChallengeEnvironmentMatches =
         loginInformation.deviceType
       ) &&
       otpChallenge.deviceType !==
-        loginInformation.deviceType
+      loginInformation.deviceType
     ) {
       return false;
     }
@@ -1207,7 +1207,7 @@ const otpChallengeEnvironmentMatches =
         loginInformation.deviceModel
       ) &&
       otpChallenge.deviceModel !==
-        loginInformation.deviceModel
+      loginInformation.deviceModel
     ) {
       return false;
     }
@@ -1224,7 +1224,7 @@ const otpChallengeEnvironmentMatches =
         loginInformation.operatingSystem
       ) &&
       otpChallenge.operatingSystem !==
-        loginInformation.operatingSystem
+      loginInformation.operatingSystem
     ) {
       return false;
     }
@@ -1241,7 +1241,7 @@ const otpChallengeEnvironmentMatches =
         loginInformation.ipAddress
       ) &&
       otpChallenge.ipAddress !==
-        loginInformation.ipAddress
+      loginInformation.ipAddress
     ) {
       return false;
     }
@@ -1258,7 +1258,7 @@ const otpChallengeEnvironmentMatches =
         locationInformation.city
       ) &&
       otpChallenge.city !==
-        locationInformation.city
+      locationInformation.city
     ) {
       return false;
     }
@@ -1275,7 +1275,7 @@ const otpChallengeEnvironmentMatches =
         locationInformation.state
       ) &&
       otpChallenge.state !==
-        locationInformation.state
+      locationInformation.state
     ) {
       return false;
     }
@@ -1335,11 +1335,11 @@ const detectNewLoginEnvironment =
 
     if (
       loginInformation.browserName !==
-        "Unknown" &&
+      "Unknown" &&
       previousLogin.browserName !==
-        "Unknown" &&
+      "Unknown" &&
       loginInformation.browserName !==
-        previousLogin.browserName
+      previousLogin.browserName
     ) {
       changedFactors.push(
         "browser"
@@ -1364,22 +1364,22 @@ const detectNewLoginEnvironment =
 
     if (
       currentDeviceType !==
-        "Unknown" &&
+      "Unknown" &&
       previousDeviceType !==
-        "Unknown" &&
+      "Unknown" &&
       currentDeviceType !==
-        previousDeviceType
+      previousDeviceType
     ) {
       changedFactors.push(
         "device"
       );
     } else if (
       currentDeviceModel !==
-        "Unknown" &&
+      "Unknown" &&
       previousDeviceModel !==
-        "Unknown" &&
+      "Unknown" &&
       currentDeviceModel !==
-        previousDeviceModel
+      previousDeviceModel
     ) {
       changedFactors.push(
         "device"
@@ -1392,15 +1392,15 @@ const detectNewLoginEnvironment =
 
     if (
       loginInformation.ipAddress !==
-        "Unknown" &&
+      "Unknown" &&
       loginInformation.ipAddress !==
-        "::1" &&
+      "::1" &&
       previousLogin.ipAddress !==
-        "Unknown" &&
+      "Unknown" &&
       previousLogin.ipAddress !==
-        "::1" &&
+      "::1" &&
       loginInformation.ipAddress !==
-        previousLogin.ipAddress
+      previousLogin.ipAddress
     ) {
       changedFactors.push(
         "ip"
@@ -1413,11 +1413,11 @@ const detectNewLoginEnvironment =
 
     if (
       locationInformation.city !==
-        "Unknown" &&
+      "Unknown" &&
       previousLogin.city !==
-        "Unknown" &&
+      "Unknown" &&
       locationInformation.city !==
-        previousLogin.city
+      previousLogin.city
     ) {
       changedFactors.push(
         "city"
@@ -1430,11 +1430,11 @@ const detectNewLoginEnvironment =
 
     if (
       locationInformation.state !==
-        "Unknown" &&
+      "Unknown" &&
       previousLogin.state !==
-        "Unknown" &&
+      "Unknown" &&
       locationInformation.state !==
-        previousLogin.state
+      previousLogin.state
     ) {
       changedFactors.push(
         "state"
@@ -1477,7 +1477,7 @@ const saveLoginHistory =
       const duplicateWindowStart =
         new Date(
           Date.now() -
-            10 * 1000
+          10 * 1000
         );
 
       const recentLogin =
@@ -1557,7 +1557,7 @@ const getOtpExpiryMinutes =
         configuredValue
       ) &&
       configuredValue >
-        0
+      0
     ) {
       return configuredValue;
     }
@@ -1630,9 +1630,9 @@ const createAndSendOtpChallenge =
     const expiresAt =
       new Date(
         Date.now() +
-          expiresInMinutes *
-            60 *
-            1000
+        expiresInMinutes *
+        60 *
+        1000
       );
 
     // -----------------------------------------
@@ -1746,6 +1746,7 @@ const createAndSendOtpChallenge =
     // -----------------------------------------
 
     try {
+      console.log("DEBUG: About to send login OTP email");
       await sendLoginOtpEmail({
         email,
 
@@ -1771,6 +1772,8 @@ const createAndSendOtpChallenge =
           locationInformation?.state ||
           "Unknown",
       });
+
+      console.log("DEBUG: Login OTP email function completed");
 
       return {
         success:
